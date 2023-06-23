@@ -22,8 +22,6 @@ def bullet(x,y):
     bullet_state = "fire"
 
 
-    
-
 
 
 # Collision Concept
@@ -42,6 +40,12 @@ class enemy_goblin(pygame.sprite.Sprite):
         self.image=pygame.image.load("enemy_globlin.png").convert_alpha()
         self.rect=self.image.get_rect(topleft=pos)
 
+    
+class enemy_pig(pygame.sprite.Sprite):
+    def __init__(self,pos,group):
+        super().__init__(group)
+        self.image = image_pig_t
+        self.rect=self.image.get_rect(topleft=pos)
 
                  
 class Tree(pygame.sprite.Sprite):
@@ -331,6 +335,15 @@ class CameraGroup(pygame.sprite.Group):
 pygame.init()
 screen=pygame.display.set_mode((1200,715))
 clock=pygame.time.Clock()
+#graph transform
+#enemy pig 
+image_pig= pygame.image.load("enemy_pig.png").convert_alpha()
+image_pig_t = pygame.transform.scale(image_pig,(200,200))
+#enemy globin
+image_goblin=pygame.image.load("enemy_globlin.png").convert_alpha()
+#pig offset
+pig_x_offset = 5
+pig_y_offset = 5
 #set up
 camera_group=CameraGroup()
 player=Player((640,360),camera_group)
@@ -341,35 +354,59 @@ for i in range(60):
     Tree((random_x,random_y),camera_group)
 
 
-goblin_Xchange=[]
-goblin_Ychange=[]
 
-for i in range(10):
-    random_x=randint(0,3000)
-    random_y=randint(0,3000)
-    enemy_goblin((random_x,random_y),camera_group)
-'''    goblin_Xchange.append=[1.2]
-    goblin_Ychange.append=[50]
-
-'''
-    
-while True:
+pig_x=0
+pig_y=0
+done = False
+while not done:
     for event in pygame.event.get():
-
         if event.type==pygame.QUIT:
+            done = True
             pygame.quit()
             sys.exit()
+    pig_x=pig_x+pig_x_offset
+    if pig_x==0 or pig_x==1000:
+        pig_x_offset=pig_x_offset*(-1)
+        pig_x=pig_x+pig_x_offset
+        
+    pig_y=pig_y+pig_y_offset
+    if pig_y==0 or pig_y==600:
+        pig_y_offset=pig_y_offset*(-1)
+        pig_y=pig_y+pig_y_offset
+        
+    screen.blit(image_pig_t,(pig_x,pig_y))
 
 
-    screen.fill("#71ddee")
-
-    camera_group.update()
-    camera_group.custom_draw(player)
     
+    
+    random_x=randint(0,100)
+    globin_x=random_x+pig_x_offset
+    if globin_x==0 or globin_x==1000:
+        globin_x_offset=pig_x_offset*(-1)
+        globin_x=globin_x+globin_x_offset
+
+        
+    random_y=randint(0,7)
+    globin_y=random_y+pig_y_offset
+    if globin_y==0 or globin_y==715:
+        globin_y_offset=pig_y_offset*(-1)
+        globin_y=globin_y+globin_y_offset
+            
+    screen.blit(image_goblin,(globin_x,globin_y))
+
+
+
     pygame.display.update()
     clock.tick(100)
 
 
+
+    screen.fill("#71ddee")
+    
+
+    camera_group.update()
+    
+    camera_group.custom_draw(player)
 
 
 
