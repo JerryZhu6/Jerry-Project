@@ -36,9 +36,9 @@ def isCollision(x1, x2, y1, y2):
     
 class enemy_goblin(pygame.sprite.Sprite):
     def __init__(self,pos,group):
-        super().__init__(group)
-        self.image=pygame.image.load("enemy_globlin.png").convert_alpha()
+        super().__init__(group)  
         self.rect=self.image.get_rect(topleft=pos)
+        self.HP=500
 
     
 class enemy_pig(pygame.sprite.Sprite):
@@ -46,6 +46,7 @@ class enemy_pig(pygame.sprite.Sprite):
         super().__init__(group)
         self.image = image_pig_t
         self.rect=self.image.get_rect(topleft=pos)
+        self.HP=300
 
                  
 class Tree(pygame.sprite.Sprite):
@@ -339,11 +340,13 @@ clock=pygame.time.Clock()
 #enemy pig 
 image_pig= pygame.image.load("enemy_pig.png").convert_alpha()
 image_pig_t = pygame.transform.scale(image_pig,(200,200))
-#enemy globin
+#enemy goblin
 image_goblin=pygame.image.load("enemy_globlin.png").convert_alpha()
 #pig offset
 pig_x_offset = 5
 pig_y_offset = 5
+goblin_x_offset = 2
+goblin_y_offset = 2
 #set up
 camera_group=CameraGroup()
 player=Player((640,360),camera_group)
@@ -357,6 +360,8 @@ for i in range(60):
 
 pig_x=0
 pig_y=0
+goblin_x=10
+goblin_y=10
 done = False
 while not done:
     for event in pygame.event.get():
@@ -368,6 +373,7 @@ while not done:
     if pig_x==0 or pig_x==1000:
         pig_x_offset=pig_x_offset*(-1)
         pig_x=pig_x+pig_x_offset
+        image_pig_t=pygame.transform.flip(image_pig_t,True,False)
         
     pig_y=pig_y+pig_y_offset
     if pig_y==0 or pig_y==600:
@@ -375,24 +381,20 @@ while not done:
         pig_y=pig_y+pig_y_offset
         
     screen.blit(image_pig_t,(pig_x,pig_y))
-
-
     
-    
-    random_x=randint(0,100)
-    globin_x=random_x+pig_x_offset
-    if globin_x==0 or globin_x==1000:
-        globin_x_offset=pig_x_offset*(-1)
-        globin_x=globin_x+globin_x_offset
+    goblin_x=goblin_x+goblin_x_offset
+    if goblin_x==0 or goblin_x==1000:
+        goblin_x_offset=goblin_x_offset*(-1)
+        goblin_x=goblin_x+goblin_x_offset
 
         
-    random_y=randint(0,7)
-    globin_y=random_y+pig_y_offset
-    if globin_y==0 or globin_y==715:
-        globin_y_offset=pig_y_offset*(-1)
-        globin_y=globin_y+globin_y_offset
+    
+    goblin_y=goblin_y+goblin_y_offset
+    if goblin_y==0 or goblin_y==500:
+        goblin_y_offset=goblin_y_offset*(-1)
+        goblin_y=goblin_y+goblin_y_offset
             
-    screen.blit(image_goblin,(globin_x,globin_y))
+    screen.blit(image_goblin,(goblin_x,goblin_y))
 
 
 
