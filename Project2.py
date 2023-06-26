@@ -386,6 +386,7 @@ while not done:
     if goblin_x==0 or goblin_x==1000:
         goblin_x_offset=goblin_x_offset*(-1)
         goblin_x=goblin_x+goblin_x_offset
+        image_goblin=pygame.transform.flip(image_goblin,True,False)
 
         
     
